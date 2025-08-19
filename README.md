@@ -1,8 +1,8 @@
-# Getting started with Claude Flow
+# Getting Started with `Claude Flow`
 
-> Published on 
+> **Warning!** This is a draft & may contain inaccuracies!
 
-Since the launch of [`Claude Code`](https://docs.anthropic.com/en/docs/claude-code/overview) in May 2025, it has become more & more widely adopted among software engineers.
+Since the launch of [`Claude Code`](https://docs.anthropic.com/en/docs/claude-code/overview) in May 2025, it has become more & more widely adopted among (particularly among software engineers).
 
 > What's `Claude Code`? 
 >
@@ -10,9 +10,37 @@ Since the launch of [`Claude Code`](https://docs.anthropic.com/en/docs/claude-co
 
 I have personally use it because it is more customisable than it's web-based peers like `ChatGPT` since it can access my local files and command line tools.
 
-So what's [`Claude Flow`](https://github.com/ruvnet/claude-flow)? This open source library was initally launched as a `Claude Code` agent orchestrator. This means that it can create and coordinate multiple agents to solve a particular goal.  This is most easily understood with an example.
+I can launch it like
 
-Let's say I want to create a `Claude Flow` tutorial for newcomers.
+```sh
+claude
+```
+
+and then enter ask questions in my terminal as I would in a web-based interface
+
+```sh
+> what's the difference between you and a web-based interface?
+
+● I'm Claude Code, a CLI tool that runs directly in your terminal with several key advantages:
+
+  Local development focus: I have direct access to your filesystem, can execute commands, edit
+   files, and run builds/tests locally - the web interface can't touch your machine.
+
+  Persistent workspace: I work in your actual project directory with git integration, while
+  the web version has no filesystem access.
+
+  MCP server integration: I can connect to Model Context Protocol servers for extended
+  capabilities like swarm orchestration, GitHub automation, and persistent memory.
+
+  Terminal-native: Optimized for command-line workflows with concise output, batch operations,
+   and integration with your existing dev tools.
+```
+
+So what's [`Claude Flow`](https://github.com/ruvnet/claude-flow)?
+
+This open source library turns `Claude Code` into a subagent orchestrator. This means that it can create and coordinate multiple subagents to solve a particular goal.
+
+Let's explore this with an example - creating a `Claude Flow` tutorial for newcomers.
 
 Using only `Claude Code` I can launch it
 
@@ -49,10 +77,10 @@ Unfortunately the resulting tutorial has absolutely nothing to do with `Claude F
 Oh well. Let's see if `Claude Flow` does any better.
 
 If I use `Claude Flow` instead it breaks up the goal into subtasks **and** 
-- Creates a team of AI agents with relevant specialties (researcher, teacher, etc)
+- Creates a team of AI subagents with relevant specialties (researcher, teacher, etc)
 - Assigns responsibilities to each
-- Waits each agent to complete its job
-- Fetches the results from each agent
+- Waits each subagent to complete its job
+- Fetches the results from each subagent
 - Combines the result
 
 I can launch it like
@@ -62,7 +90,7 @@ npx claude-flow@alpha init
 claude-flow swarm "Create a `Claude Flow` tutorial for newcomers; specifically newcomers who are comfortable on the command line. Create a new file ../_posts/2025-08-19-get-started-with-claude-flow-by-claude-flow.md"
 ```
 
-and it responds with
+and it responds with something like
 
 ```sh
 > You are orchestrating a Claude Flow Swarm with advanced MCP tool coordination.
@@ -71,7 +99,7 @@ and it responds with
   on the command line. Create a new file
   ../_posts/2025-08-19-get-started-with-claude-flow-by-claude-flow.md
 
-  # ... and ~400 more lines of instructions to teach Claude Code how to orchestrate agents
+  # ... and ~400 more lines of instructions to teach Claude Code how to orchestrate subagents
 
 ● I'll create a comprehensive Claude Flow tutorial for command-line savvy newcomers. Let me
   start by initializing a swarm to orchestrate this task efficiently.
@@ -130,5 +158,42 @@ and it responds with
   ⎿  Wrote 546 lines to _posts/2025-08-19-get-started-with-claude-flow-by-claude-flow.md
 ```
 
-The `Claude Flow` tutorial is actually about `Claude Code`, however, it does nonetheless halluncinate a little & invent commands.
+The resulting `Claude Flow` tutorial is actually about `Claude Flow` this time around! However, it does nonetheless halluncinate a little & invent commands.
 
+> So how does it work?
+>
+> `npx claude-flow@alpha init` creates the files (like `CLAUDE.md` & `.claude/`) defining the types of subagents `Claude Code` has access to and how to invoke and orchestrate them.
+> 
+> The key piece of `Claude Code` that lets `Claude Flow` create subagents is `batchtool`. It lets `Claude Flow` spin up subagents in a separate process, and thus run many subagents in parallel.
+
+Okay so running things in parallel is obviously faster than sequential, but are there any other benefits?
+
+The big initial attraction for me was not parallelism but rather `SPARC`, or "Specification, Pseudocode, Architecture, Refinement, Completion", which can be used to force the subagents to adhere to Test Driven Development (TDD) among other good practices like
+
+```sh
+claude-flow sparc modes
+✅ Available SPARC Modes:
+
+• 🏗️ Architect (architect)
+• 🧠 Auto-Coder (code)
+• 🧪 Tester (TDD) (tdd)
+• 🪲 Debugger (debug)
+• 🛡️ Security Reviewer (security-review)
+• 📚 Documentation Writer (docs-writer)
+• 🔗 System Integrator (integration)
+• 📈 Deployment Monitor (post-deployment-monitoring-mode)
+• 🧹 Optimizer (refinement-optimization-mode)
+• ❓Ask (ask)
+• 🚀 DevOps (devops)
+• 📘 SPARC Tutorial (tutorial)
+• 🔐 Supabase Admin (supabase-admin)
+• 📋 Specification Writer (spec-pseudocode)
+• ♾️ MCP Integration (mcp)
+• ⚡️ SPARC Orchestrator (sparc)
+```
+
+This improves the quality of the generated code prior to a code review since it checks the code outputs as it produces them as a human might.
+
+> As far as I understand this mode still does not fully protect against hallucinations, but it goes a long way towards doing so. For example, the AI might decide to delete the tests rather than change code to "fix" failing tests.    
+
+I'll cover this in another post.
