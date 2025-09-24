@@ -1,14 +1,13 @@
-# Getting Started with `Claude Flow`
-
-> **Warning!** This is a draft & may contain inaccuracies!
-
+> [!WARNING]
+> I am not a member of the `Claude Flow` team, this is merely what I picked up from watching videos at [https://video.agentics.org/](https://video.agentics.org/). If there's anything inaccurate here, please post an issue at [https://github.com/rdmolony/claude-flow-getting-started/issues](https://github.com/rdmolony/claude-flow-getting-started/issues)
+ 
 Since the launch of [`Claude Code`](https://docs.anthropic.com/en/docs/claude-code/overview) in May 2025, it has become more & more widely adopted among (particularly among software engineers).
 
 > What's `Claude Code`? 
 >
 > Since `ChatGPT` launched in November 2022, the predominant way of interacting with `Large Language Models` has been through a web-based chat interface. `Claude Code`, by contrast, is a terminal-based interface. A web-based interface cannot access software on your computer, or files unless you manually upload them. A terminal-based interface can. This makes it waaaay more hackable since you can combine it with whatever tools or files you want. This also makes the tool more dangerous since it can now potentially delete important files on your computer, or access credentials! So "use it with caution"
 
-I have personally use it because it is more customisable than it's web-based peers like `ChatGPT` since it can access my local files and command line tools.
+I have personally use it because it is more customisable than its web-based peers like `ChatGPT` since it can access my local files and command line tools.
 
 I can launch it like
 
@@ -38,9 +37,9 @@ and then enter ask questions in my terminal as I would in a web-based interface
 
 So what's [`Claude Flow`](https://github.com/ruvnet/claude-flow)?
 
-This open source library turns `Claude Code` into a subagent orchestrator. This means that it can create and coordinate multiple subagents to solve a particular goal.
+This open source library turns `Claude Code` into an opinionated subagent orchestrator, and provides it with additional tools via the Model Context Protocol (MCP) that `Claude Code` can use to achieve its goal.
 
-Let's explore this with an example - creating a `Claude Flow` tutorial for newcomers.
+Let's focus just on `Claude Flow`'s subagent orchestration here with an example - creating a `Claude Flow` tutorial for newcomers.
 
 Using only `Claude Code` I can launch it
 
@@ -77,6 +76,7 @@ Unfortunately the resulting tutorial has absolutely nothing to do with `Claude F
 Oh well. Let's see if `Claude Flow` does any better.
 
 If I use `Claude Flow` instead it breaks up the goal into subtasks **and** 
+
 - Creates a team of AI subagents with relevant specialties (researcher, teacher, etc)
 - Assigns responsibilities to each
 - Waits each subagent to complete its job
@@ -168,32 +168,6 @@ The resulting `Claude Flow` tutorial is actually about `Claude Flow` this time a
 
 Okay so running things in parallel is obviously faster than sequential, but are there any other benefits?
 
-The big initial attraction for me was not parallelism but rather `SPARC`, or "Specification, Pseudocode, Architecture, Refinement, Completion", which can be used to force the subagents to adhere to Test Driven Development (TDD) among other good practices like
+The big initial attraction for me was not parallelism but rather best practices like `SPARC`, or "Specification, Pseudocode, Architecture, Refinement, Completion". This forces the subagents to plan out their algorithms during Specification, Pseudocode & Architecture and adhere to TDD during the Refinement phase. 
 
-```sh
-claude-flow sparc modes
-✅ Available SPARC Modes:
-
-• 🏗️ Architect (architect)
-• 🧠 Auto-Coder (code)
-• 🧪 Tester (TDD) (tdd)
-• 🪲 Debugger (debug)
-• 🛡️ Security Reviewer (security-review)
-• 📚 Documentation Writer (docs-writer)
-• 🔗 System Integrator (integration)
-• 📈 Deployment Monitor (post-deployment-monitoring-mode)
-• 🧹 Optimizer (refinement-optimization-mode)
-• ❓Ask (ask)
-• 🚀 DevOps (devops)
-• 📘 SPARC Tutorial (tutorial)
-• 🔐 Supabase Admin (supabase-admin)
-• 📋 Specification Writer (spec-pseudocode)
-• ♾️ MCP Integration (mcp)
-• ⚡️ SPARC Orchestrator (sparc)
-```
-
-This improves the quality of the generated code prior to a code review since it checks the code outputs as it produces them as a human might.
-
-> As far as I understand this mode still does not fully protect against hallucinations, but it goes a long way towards doing so. For example, the AI might decide to delete the tests rather than change code to "fix" failing tests.    
-
-I'll cover this in another post.
+In my experience, this makes a big difference in improving the quality of the code output since it provides some good defaults for machine-in-the-loop validation. However, as far as I understand this mode still does not fully protect against hallucinations. For example, the AI might decide to delete the tests rather than change code to "fix" failing tests. `SPARC` is not a silver bullet. You'll likely need to know what you want beforehand & define a solid specification. 
